@@ -1,0 +1,71 @@
+name:                thread-local-storage
+version:             0.1.2
+synopsis:            Several options for thread-local-storage (TLS) in Haskell.
+description:
+   "
+   Thread-local storage, or TLS, is an important ingredient in many
+   algorithms and data structures.
+
+   .
+
+   The GHC compiler does not provide a built-in notion of TLS either
+   at the IO-thread or OS thread level.  This package provides a few
+   different implementations of a simple TLS API.
+
+   .
+
+   All exported public modules provide exactly the same interface with
+   different implementations.  Run the included criterion benchmark
+   suite to ascertain which performs the best on your platform.
+
+   .
+
+   Example criterion benchmark data can be found here (from an Intel Ivy-Bridge i7-3770 desktop):
+      <http://www.cs.indiana.edu/~rrnewton/datasets/xmen_tls_report.html>
+   "
+homepage:            https://github.com/rrnewton/thread-local-storage
+bug-reports:         https://github.com/rrnewton/thread-local-storage/issues
+license:             BSD3
+license-file:        LICENSE
+author:              "Ryan Newton"
+maintainer:          "rrnewton@gmail.com"
+category:            System
+
+extra-source-files:
+- CHANGELOG.md
+- README.md
+- Data/TLS/TLS_Sig.hs
+
+github: "rrnewton/thread-local-storage"
+
+dependencies:
+- base >= 4.7 && < 5
+- containers >= 0.5
+- criterion >= 1.2.1
+- atomic-primops >= 0.6.0.6
+
+library:
+  source-dirs: .
+  exposed-modules:
+  - Data.TLS.GHC
+  - Data.TLS.PThread
+  - Data.TLS.PThread.Internal
+  other-modules: Paths_thread_local_storage
+  other-extensions:    BangPatterns, NamedFieldPuns, CPP
+  ghc-options: -Wall -O2
+  c-sources: cbits/helpers.c
+  extra-libraries: pthread
+
+benchmarks:
+  bench-haskell-tls:
+    main: Main.hs
+    source-dirs: bench
+    dependencies: thread-local-storage
+    ghc-options: -Wall -rtsopts -O2 -threaded -with-rtsopts=-T
+
+tests:
+  test-tls:
+    main: Main.hs
+    source-dirs: tests
+    dependencies: thread-local-storage
+    ghc-options: -Wall -rtsopts -O2 -threaded -with-rtsopts=-N4

@@ -1,5 +1,5 @@
 # For more information, see: http://docs.haskellstack.org/en/stable/yaml_configuration.html
 
-resolver: lts-5.13
+resolver: lts-11.6
 packages:
 - '.'
